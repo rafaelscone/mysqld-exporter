@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  mysqld-exporter:
+  - apiVersion: v2
+    created: "2025-03-11T11:08:44.557252Z"
+    description: Chart-Deploy-mysqld-exporter
+    digest: a3627e2302512350c183da9eeb0523085745d2319249f980c941975710b0d2e7
+    name: mysqld-exporter
+    type: application
+    urls:
+    - mysqld-exporter-0.0.1.tgz
+    version: 0.0.1
+generated: "2025-03-11T11:08:44.555942Z"
