@@ -1,5 +1,7 @@
 # mysqld-exporter Chart for Helm
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/rafaelscone)](https://artifacthub.io/packages/search?repo=rafaelscone)
+
 InputValues: 
 ```yaml
 targetHosts:
