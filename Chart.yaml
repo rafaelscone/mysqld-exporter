@@ -1,0 +1,7 @@
+apiVersion: v2
+name: mysql-exporter
+description: Chart-Deploy-mysqld-exporter
+
+type: application
+
+version: 0.0.1

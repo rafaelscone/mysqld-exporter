@@ -1,0 +1,68 @@
+{{- range .Values.targetHosts }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
+        prometheus.io/path: "/metrics"
+    spec:
+      tolerations: 
+        - key: role
+          operator: Equal
+          value: monitoring
+          effect: NoSchedule
+      serviceAccountName: default
+      containers:
+      - name: {{ .name }}
+        image: {{ $.Values.image  }}
+        args:
+          - --mysqld.address= {{ .host}}
+          - --mysqld.username="$MYSQLD_EXPORTER_USERNAME"
+        env:
+          - name: MYSQLD_EXPORTER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .secretName }}
+                key: {{ .secretKeyDbPassword }}
+          - name: MYSQLD_EXPORTER_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .secretName }}
+                key: {{ .secretKeyDbUser }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9104
+          initialDelaySeconds: 3
+          periodSeconds: 60
+          timeoutSeconds: 3
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          tcpSocket:
+            port: 9104
+          initialDelaySeconds: 1
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+          successThreshold: 1
+        ports:
+          - containerPort: 9104
+      
+            
+---
+{{- end }}
+      
